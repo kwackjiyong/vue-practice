@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>vuejs</title>
+    <script src="https:unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+</head>
+
+
+<!-- contact 컴포넌트-->
+<template id="listTemplate">
+    <div>
+        <table border=1>
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>전화번호</th>
+                <th>사진</th>
+            </tr>
+            <tr v-for="c in contacts">
+                <td>{{c.no}}</td>
+                <td>{{c.name}}</td>
+                <td>{{c.tel}}</td>
+                <td><img v-bind:src="c.photo"></td>
+            </tr>
+
+        </table>
+    </div>
+</template>
+<script>
+    Vue.component('list-component', {
+        template: '#listTemplate',
+        props: ['contacts']
+    })
+</script>
+
+<!--search 이벤트 전달 컴포넌트 -->
+
+<template id="searchTemplate">
+    <p>
+        이름 : <input type="text" v-model.trim="name" v-bind:placeholder="placeholder" v-on:keyup.enter="keyupEvent"/>
+    </p>
+</template>
+<script>
+    Vue.component('search-component', {
+        template: '#searchTemplate',
+        props: ['placeholder'],
+        data: function() {
+            return {
+                name: ''
+            };
+        },
+        methods: {
+            keyupEvent: function(e) {
+                var val = e.target.value;
+                if (val.length >= 2) {
+                    this.$emit('search', val);
+                    console.log('search-> name:' + val);
+                } else {
+                    this.$emit('search', '');
+                }
+            }
+        }
+    })
+</script>
+
+<!-- api json 데이터 컴포넌트 -->
+<template id="jsonTemplate">
+    <div>
+        <search-component placeholder="두글자 입력후 엔터" @search="searchEvent"></search-component>
+        <list-component v-bind:contacts="contactlist"></list-component>
+        <div v-show="isProcessing === true">조회중</div>
+    </div>
+</template>
+<script>
+    Vue.component('json-component', {
+        template: '#jsonTemplate',
+        data: function() {
+            return {
+                contactlist: [],
+                isProcessing: false
+            }
+        },
+        methods: {
+            searchEvent: function(name) {
+                if (name == '') {
+                    console.log('nothing search');
+                    this.contactlist = [];
+                } else {
+                    console.log('name->json component:' + name);
+                    this.fetchContacts(name);
+                }
+            },
+            fetchContacts: _.debounce(function(name) {
+                this.contactlist = [];
+                this.isProcessing = true;
+                var url = "http://sample.bmaster.kro.kr/contacts/search/" + name;
+                var vm = this;
+                fetch(url).then(function(response) {
+                    return response.json();
+                }).then(function(json) {
+                    console.log('name-> fetchAPI():' + json);
+                    vm.contactlist = json;
+                    console.log(vm.contactlist);
+                    vm.isProcessing = false;
+                }).catch(function(ex) {
+                    console.log('parsing failed', ex);
+                    vm.contactlist = [];
+                    vm.isProcessing = false;
+                })
+
+            }, 300)
+        }
+    })
+</script>
+
+<body>
+    <div id="app">
+        <json-component></json-component>
+    </div>
+</body>
+<script>
+    Vue.config.devtools = true;
+    var vm = new Vue({
+        el: "#app"
+    })
+</script>
+
+</html>

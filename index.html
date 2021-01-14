@@ -40,7 +40,22 @@
         <span v-else-if="balance >= 200000">Bronze</span>
         <span v-else>Basic</span>
     </div>
-
+    <br>
+    <hr><br>
+    <div id="for-contents">
+        <table border=1>
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>직업</th>
+            </tr>
+            <tr v-for="contact in contacts">
+                <td> {{contact.no}}</td>
+                <td> {{contact.na}}</td>
+                <td> {{contact.jo}}</td>
+            </tr>
+        </table>
+    </div>
 
     <script type="text/javascript">
         // 모델
@@ -53,26 +68,57 @@
         var model_2 = {
             fruits: []
         };
+        var listmodel = {
+            contacts: [{
+                "no": 1,
+                "na": "지용",
+                "jo": "백수"
+            }, {
+                "no": 2,
+                "na": "지용",
+                "jo": "2백수"
+            }, {
+                "no": 3,
+                "na": "지용",
+                "jo": "3백수"
+            }, {
+                "no": 4,
+                "na": "지용",
+                "jo": "4백수"
+            }, {
+                "no": 5,
+                "na": "지용",
+                "jo": "5백수"
+            }, {
+                "no": 6,
+                "na": "지용",
+                "jo": "6백수"
+            }]
+        };
 
         //뷰모델
         var simple = new Vue({
             el: '#simple',
             data: model
-        })
+        });
         var fruits = new Vue({
             el: '#fruits',
             data: model_2
-        })
+        });
         var fruits_choice = new Vue({
             el: '#fruits_choice',
             data: model_2
-        })
+        });
         var acnt = new Vue({
             el: '#account',
             data: {
                 balance: 0
             }
+        });
 
+        var list = new Vue({
+            el: '#for-contents',
+            data: listmodel
         })
     </script>
 </body>

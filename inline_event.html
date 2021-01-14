@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>자바스크립트</title>
+    <script src="https:unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-pormise.auto.min.js"></script>
+</head>
+
+<body>
+    <div id="body">
+        <input type="text" v-model="amount" /><br>
+        <button id="deposit" v-on:click="deposit">예금하기</button>
+        <button id="withdraw" v-on:click="withdraw">인출하기</button>
+        <br> 계좌 잔고 <span v-text="balance"></span>
+    </div>
+    <script>
+        var model = {
+            amount: 0,
+            balance: 0
+        }
+
+        var vm = new Vue({
+            el: "#body",
+            data: model,
+            methods: {
+                deposit: function(e) {
+                    var amt = parseInt(this.amount);
+                    if (amt <= 0) {
+                        alert('0보다 큰 값을 예금해야 합니다.');
+                    } else {
+                        this.balance += amt;
+                    }
+                },
+                withdraw: function(e) {
+                    var amt = parseInt(this.amount);
+                    if (amt <= 0) {
+                        alert('0보다 큰값을 인출해야 합니다.');
+                    } else if (0 > this.balance - amt) {
+                        alert('잔고가 부족합니다.');
+                    } else {
+                        this.balance -= amt;
+                    }
+                }
+
+            }
+
+
+        })
+    </script>
+</body>
+
+
+</html>

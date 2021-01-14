@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>자바스크립트</title>
+    <script src="https:unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="cal_body">
+        <input type="text" :value="inputName" @input="nameChanged" />
+        <table border="1">
+            <tr>
+                <th>no</th>
+                <th>name</th>
+            </tr>
+            <tr v-for="c in filtered">
+                <td>{{c.no}}</td>
+                <td>{{c.name}}</td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        var model = {
+            inputName: "",
+            nameList: [{
+                no: 1,
+                name: "지용"
+            }, {
+                no: 2,
+                name: "종호"
+            }, {
+                no: 3,
+                name: "효우"
+            }, {
+                no: 4,
+                name: "우정"
+            }, {
+                no: 5,
+                name: "개리"
+            }, {
+                no: 6,
+                name: "뱅뱅"
+            }, ]
+        }
+
+        var list_sum = new Vue({
+            el: "#cal_body",
+            data: model,
+            computed: {
+                filtered: function() {
+                    var cname = this.inputName.trim();
+                    return this.nameList.filter(function(item, index) {
+                        if (item.name.indexOf(cname) > -1) {
+                            return true;
+                        }
+                    });
+                }
+            },
+            methods: {
+                nameChanged: function(e) {
+                    this.inputName = e.target.value;
+                }
+            }
+        });
+    </script>
+</body>
+
+
+</html>
