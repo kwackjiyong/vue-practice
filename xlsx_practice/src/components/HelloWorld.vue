@@ -29,7 +29,7 @@
 </template>
 <script>
 import XLSX from 'xlsx'
-import {Document,Paragraph,Packer,TextRun,Table,TableRow,TableCell,Header,WidthType} from "docx"
+import {Document,Paragraph,Packer,TextRun,Table,TableRow,TableCell,Header,WidthType,ShadingType,AlignmentType} from "docx"
 import { saveAs } from "file-saver"
 export default {
   name: 'HelloWorld',
@@ -80,80 +80,367 @@ export default {
         let doc = new Document();
         // Documents contain sections, you can have multiple sections per document, go here to learn more about sections
         // This simple example will only contain one section 
-
+        let shadingObj = {
+              fill: "d3d3d3",
+              val: ShadingType.CLEAR,
+              olor: "auto",
+        }
 
         doc.addSection({
           headers: {
             default: new Header({
-                children: [new Paragraph("머릿글 달아보기")],
+                children: [new Paragraph("오픈오브젝트 PMS에서 쓰여짐")],
             }),
         },
         properties: {},
           children: [
           new Paragraph({
-            children: [new TextRun(`평문입니다.`),],
+            alignment : AlignmentType.CENTER,
+            children: [
+            new TextRun({
+              text: '개발자 이력카드',
+              bold: true,
+              size: 40
+            }),
+            ],
+            
           }),
           new Paragraph({
             children: [
             new TextRun({
-              text: '볼드체 빨강',
-              bold: true,
-              color : 'red',
-              
+              text: '',
+              size: 40
             }),
             ],
           }),
           new Table({
+                alignment: AlignmentType.CENTER,
                 rows: [
                     new TableRow({
                         children: [
                             new TableCell({
-                                children: [new Paragraph("성  명")],
+                                children: [new Paragraph({text:"성  명", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                
                             }),
                             new TableCell({
-                                children: [new Paragraph("  ")],
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:2
                             }),
                             new TableCell({
-                                children: [new Paragraph("영문성명")],
+                                children: [new Paragraph({text:"영문성명", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
                             }),
                             new TableCell({
-                                children: [new Paragraph("  ")],
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:2
                             }),
                             new TableCell({
-                                children: [new Paragraph("기술등급")],
+                                children: [new Paragraph({text:"기술등급", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
                             }),
                             new TableCell({
-                                children: [new Paragraph("  ")],
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:2
                             }),
                         ],
                     }),
                     new TableRow({
                         children: [
                             new TableCell({
-                                children: [new Paragraph("전산경력")],
+                                children: [new Paragraph({text:"주  소", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
                             }),
                             new TableCell({
-                                children: [new Paragraph("")],
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:5
                             }),
                             new TableCell({
-                                children: [new Paragraph("부  서")],
+                                children: [new Paragraph({text:"생년월일", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
                             }),
                             new TableCell({
-                                children: [new Paragraph("")],
-                            }),
-                            new TableCell({
-                                children: [new Paragraph("직  위")],
-                            }),
-                            new TableCell({
-                                children: [new Paragraph("")],
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:2
                             }),
                         ],
 
                     }),
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"전산경력", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"부  서", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"직  위", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:2
+                            }),
+                        ],
+                    }),
+                ],
+                width :{ size: 100 ,type: WidthType.PERCENTAGE }
+            }),
+
+            new Table({
+                alignment: AlignmentType.CENTER,
+                rows: [
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"대학교", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"과 졸업", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"년", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"월", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"자격증명", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"취득일자", alignment: AlignmentType.CENTER,})],
+                            }),
+                        ],
+                    }),
+
+
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"대학원", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"과 졸업", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"년", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"월", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                        ],
+                    }),
+
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"보유기술", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:9
+                            }),
+                        ],
+                    }),
+
 
                 ],
-                width :{ size: 8000 ,type: WidthType.DXA }
-            })
+                width :{ size: 100 ,type: WidthType.PERCENTAGE }
+            }),
+            
+            new Paragraph({
+            children: [
+            new TextRun({
+              text: '경력사항',
+              bold: true,
+              size: 25
+            }),
+            ],
+          }),
+
+            new Table({
+                alignment: AlignmentType.CENTER,
+                rows: [
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"회  사  명", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"기  간", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"직  위", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"담당업무", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj
+                            }),
+                        ],
+                    }),
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                        ],
+                    }),
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"학원 및 전문가과정 교육", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                columnSpan:4
+                            }),
+                        ],
+                    }),
+
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"-내용-", alignment: AlignmentType.CENTER,})],
+                                columnSpan:2
+                            }),
+                        ],
+                    }),
+
+
+                ],
+                width :{ size: 100 ,type: WidthType.PERCENTAGE }
+            }),
+
+
+            
+            new Paragraph({
+              children: [
+              new TextRun({
+                text: '주요 프로젝트 경력',
+                bold: true,
+                size: 25
+              }),
+              ],
+            }),
+
+            new Table({
+                alignment: AlignmentType.CENTER,
+                rows: [
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"프로젝트명", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                rowSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"기  간", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                rowSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"발주처", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                rowSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"참여범위", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                rowSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"개발환경", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                columnSpan:4
+                            }),
+                        ],
+                    }),
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph({text:"프로젝트명", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                rowSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"기  간", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                rowSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"발주처", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                rowSpan:2
+                            }),
+                            new TableCell({
+                                children: [new Paragraph({text:"참여범위", alignment: AlignmentType.CENTER,})],
+                                shading: shadingObj,
+                                rowSpan:2
+                            }),
+                        ],
+                    }),
+
+
+                ],
+                width :{ size: 100 ,type: WidthType.PERCENTAGE }
+            }),
 
 
 
