@@ -1,0 +1,178 @@
+<template>
+  <div class="hello" id="exceltable">
+    
+      <table ref="excelTable" border="1" style="border-collapse: collapse;" align="center">
+        <tr>
+          <th colspan="6">
+            <h1 align="center" width="100%"><b>개발자 이력카드</b></h1>
+          </th>
+        </tr>
+        <tr>
+          <td width="13%" style="background-color:lightgray;text-align:center;">성  명</td><td width="12%"></td>
+          <td width="13%" style="background-color:lightgray;text-align:center;">영문성명</td><td width="12%"></td>
+          <td width="12%" style="background-color:lightgray;text-align:center;">기술등급</td><td width="13%"></td>
+        </tr>
+        <tr>
+          <td width="13%" style="background-color:lightgray;text-align:center;">주  소</td><td width="12%" colspan="3"></td>
+          <td width="13%" style="background-color:lightgray;text-align:center;">생년월일</td><td width="12%"></td>
+        </tr>
+        <tr>
+          <td width="13%" style="background-color:lightgray;text-align:center;">전산경력</td><td width="12%"></td>
+          <td width="13%" style="background-color:lightgray;text-align:center;">부  서</td><td width="12%"></td>
+          <td width="12%" style="background-color:lightgray;text-align:center;">직  위</td><td width="13%"></td>
+        </tr>
+      </table>
+      <button @click="exportExcel">엑셀다운 (vue xlsx라이브러리 사용)</button>
+      <button @click="exportWord">워드다운(html/word 다운링크 활용)</button>
+      <button @click="createDoc">워드다운(vue docx 라이브러리 사용)</button>
+  </div>
+</template>
+<script>
+import XLSX from 'xlsx'
+import {Document,Paragraph,Packer,TextRun,Table,TableRow,TableCell,Header,WidthType} from "docx"
+import { saveAs } from "file-saver"
+export default {
+  name: 'HelloWorld',
+  data() {
+    return {
+    };
+  },
+  methods:{
+    exportExcel(){
+      const wb = XLSX.utils.book_new()
+      //const ws = XLSX.utils.json_to_sheet(this.tableData)
+      const ws = XLSX.utils.table_to_sheet(this.$refs.excelTable)
+      XLSX.utils.book_append_sheet(wb,ws,'sheet1')
+      var today = new Date()
+      XLSX.writeFile(wb,'result'+today+'.xlsx')
+    },
+    exportWord(){
+      var html = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+        var footer = "</body></html>";
+        html = html+this.$refs.excelTable.innerHTML+footer;
+        console.log(html);
+        var filename = '';
+        
+        //link url
+        var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+        
+        //file name
+        filename = filename?filename+'.doc':'document.doc';
+        
+        // Creates the  download link element dynamically
+        var downloadLink = document.createElement("a");
+    
+        document.body.appendChild(downloadLink);
+        
+        //Link to the file
+        downloadLink.href = url;
+            
+        //Setting up file name
+        downloadLink.download = filename;
+            
+        //triggering the function
+        downloadLink.click();
+        //Remove the a tag after donwload starts.
+        document.body.removeChild(downloadLink);
+    },
+    createDoc: function () {
+        // Create a new Document an save it in a variable
+        let doc = new Document();
+        // Documents contain sections, you can have multiple sections per document, go here to learn more about sections
+        // This simple example will only contain one section 
+
+
+        doc.addSection({
+          headers: {
+            default: new Header({
+                children: [new Paragraph("머릿글 달아보기")],
+            }),
+        },
+        properties: {},
+          children: [
+          new Paragraph({
+            children: [new TextRun(`평문입니다.`),],
+          }),
+          new Paragraph({
+            children: [
+            new TextRun({
+              text: '볼드체 빨강',
+              bold: true,
+              color : 'red',
+              
+            }),
+            ],
+          }),
+          new Table({
+                rows: [
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph("성  명")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("  ")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("영문성명")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("  ")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("기술등급")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("  ")],
+                            }),
+                        ],
+                    }),
+                    new TableRow({
+                        children: [
+                            new TableCell({
+                                children: [new Paragraph("전산경력")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("부  서")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("직  위")],
+                            }),
+                            new TableCell({
+                                children: [new Paragraph("")],
+                            }),
+                        ],
+
+                    }),
+
+                ],
+                width :{ size: 8000 ,type: WidthType.DXA }
+            })
+
+
+
+
+
+          ],
+        });
+        // To export into a .docx file
+        this.saveDocumentToFile(doc, `vuedoc.docx`);
+        },
+        saveDocumentToFile: function (doc, fileName) {
+          const mimeType =
+          "application/vnd.openxmlformatsofficedocument.wordprocessingml.document";
+          Packer.toBlob(doc).then((blob) => {
+          const docblob = blob.slice(0, blob.size, mimeType);
+          saveAs(docblob, fileName);
+        });
+        },
+  }
+}
+</script>
+
